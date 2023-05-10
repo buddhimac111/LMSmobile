@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "74261788091",
+    "firebase_url": "https://lmsmobile-8fef8-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "lmsmobile-8fef8",
+    "storage_bucket": "lmsmobile-8fef8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74261788091:android:e90ab56b8c16fffa86409e",
+        "android_client_info": {
+          "package_name": "com.nsbm.lmsmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74261788091-8d27t230a9rcgr3rp8hhf530a6s88ikp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nsbm.lmsmobile",
+            "certificate_hash": "bdf26f218505131d0465ed23d04be6cbc1bffdc9"
+          }
+        },
+        {
+          "client_id": "74261788091-20bploth9vnfkgkpvcc7lknjatflg5el.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNobtoRhbw7LaclXyA7n2Ru2w0r8MVKkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74261788091-20bploth9vnfkgkpvcc7lknjatflg5el.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
