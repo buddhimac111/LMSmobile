@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lms/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'userManage.dart';
 
 class landing extends StatefulWidget {
   const landing({Key? key}) : super(key: key);
@@ -9,6 +13,71 @@ class landing extends StatefulWidget {
 }
 
 class _landingState extends State<landing> {
+  bool _isLoading = false;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future login() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: emailController.text, password: passwordController.text);
+      print(userCredential.user!.uid);
+
+      UserDetails.uid = userCredential.user!.uid;
+      await UserDetails.getDetails();
+
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.pushNamed(context, '/sample');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        setState(() {
+          _isLoading = false;
+        });
+        print('No user found for that email.');
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Invalid Email"),
+                content: Text("No user found for that email."),
+                actions: [
+                  TextButton(
+                    child: Text("Close"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that email.');
+        setState(() {
+          _isLoading = false;
+        });
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Invalid Password"),
+                content: Text("Wrong password provided for that Email."),
+                actions: [
+                  TextButton(
+                    child: Text("Close"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +103,14 @@ class _landingState extends State<landing> {
                       margin: const EdgeInsets.only(top: 20.0),
                     ),
                     TextField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderSide:
                               BorderSide(color: customColors.landingText),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: UnderlineInputBorder(
                           borderSide:
                               BorderSide(color: customColors.landingText),
                         ),
@@ -53,14 +124,15 @@ class _landingState extends State<landing> {
                       margin: const EdgeInsets.only(top: 20.0),
                     ),
                     TextField(
+                      controller: passwordController,
                       decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(
                           borderSide:
-                          BorderSide(color: customColors.landingText),
+                              BorderSide(color: customColors.landingText),
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: UnderlineInputBorder(
                           borderSide:
-                          BorderSide(color: customColors.landingText),
+                              BorderSide(color: customColors.landingText),
                         ),
                         labelText: 'Password',
                         labelStyle: TextStyle(
@@ -75,16 +147,23 @@ class _landingState extends State<landing> {
                       width: 300.0,
                       height: 40.0,
                       child: ElevatedButton(
-                          onPressed: () {
-                            print("object printed");
-                          },
+                        onPressed: () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
 
-                        child: Text('Login',style: TextStyle(fontSize: 20.0),),
+                          login();
+                          // print(usernameController.text);
+                          // print(passwordController.text);
+                        },
+                        child: _isLoading
+                            ? CircularProgressIndicator()
+                            : Text("Login", style: TextStyle(fontSize: 20.0)),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: customColors.landingText,
-                          foregroundColor: customColors.landingBackground, // Background color
+                          foregroundColor: customColors
+                              .landingBackground, // Background color
                         ),
-
                       ),
                     )
                   ],
@@ -95,68 +174,3 @@ class _landingState extends State<landing> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'text_form.dart';
-// import 'button.dart';
-//
-// class landing extends StatefulWidget {
-//   const landing({Key? key}) : super(key: key);
-//
-//   @override
-//   State<landing> createState() => _landingState();
-//
-// }
-//
-// class _landingState extends State<landing> {
-//
-//   final TextEditingController emailController = TextEditingController();
-//   final TextEditingController passwordController = TextEditingController();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SafeArea(
-//         child: Container(
-//           width: double.infinity,
-//           padding: const EdgeInsets.all(15.0),
-//           height: MediaQuery.of(context).size.height,
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             mainAxisAlignment: MainAxisAlignment.start,
-//             children: [
-//               SizedBox(height: 20),
-//               Text(
-//                 'Login to your account',
-//                 style: TextStyle(
-//                   color: Colors.black,
-//                   fontSize: 16,
-//                   fontWeight: FontWeight.w500,
-//                 ),
-//               ),
-//               const SizedBox(height: 15),
-//               TextFormGlobal(
-//                 controller: emailController,
-//                 text: 'Email',
-//                 obscure: false,
-//                 textInputType: TextInputType.emailAddress,
-//               ),
-//               const SizedBox(height: 15),
-//               TextFormGlobal(
-//                 controller: passwordController,
-//                 text: 'Password',
-//                 textInputType: TextInputType.text,
-//                 obscure: true,
-//               ),
-//               const SizedBox(height: 15),
-//               Button(
-//                 emailController: emailController,
-//                 passwordController: passwordController,
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

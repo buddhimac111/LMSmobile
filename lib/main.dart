@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'landing.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'landing.dart';
+import 'sample.dart';
+import 'sample2.dart';
+
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
+
 class customColors {
   static const landingBackground = Color(0xFF5E6BD8);
   static const landingText = Color(0xFFFFFFFF);
@@ -32,9 +39,24 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: landing(),
+      routes: {
+        '/landing': (context) => landing(),
+        '/sample': (context) => sample(),
+        '/sample2': (context) => sample2(),
+
+      }
     );
   }
 }
+
+
+
+
+
+
+
+
+
 //
 // class MyHomePage extends StatefulWidget {
 //   const MyHomePage({super.key, required this.title});
