@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'userManage.dart';
+import '../services/userManage.dart';
 
 
 class sample extends StatefulWidget {
@@ -28,15 +28,8 @@ class _sampleState extends State<sample> {
           Text("Email: ${UserDetails.fullname}",
             style: TextStyle(fontSize: 20.0),),
               ElevatedButton(
-                onPressed: () async {
-                  try{
-                    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc("yqYS7gwVkvQcTi5pySyuIKI1iS83").get();
-                    print(documentSnapshot.get('role')) ;
-                    print(documentSnapshot.get('batch')) ;
-                    print(documentSnapshot.get('fullname')) ;
-                  } catch (e) {
-                    print(e);
-                  }
+                onPressed: ()  {
+
                   Navigator.pushNamed(context, '/sample2');
                 },
                 child: Text('Navigate to Screen 2'),

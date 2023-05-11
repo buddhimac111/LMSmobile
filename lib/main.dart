@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'landing.dart';
-import 'sample.dart';
-import 'sample2.dart';
+import 'home.dart';
+
+import 'samples/sample.dart';
+import 'samples/sample2.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +43,8 @@ class MyApp extends StatelessWidget {
       home: landing(),
       routes: {
         '/landing': (context) => landing(),
+        '/home': (context) => homePage(),
+
         '/sample': (context) => sample(),
         '/sample2': (context) => sample2(),
 

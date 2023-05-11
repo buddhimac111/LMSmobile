@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'userManage.dart';
+import '../services/userManage.dart';
 
 
 class sample2 extends StatefulWidget {

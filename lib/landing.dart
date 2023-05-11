@@ -3,7 +3,7 @@ import 'package:lms/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'userManage.dart';
+import 'services/userManage.dart';
 
 class landing extends StatefulWidget {
   const landing({Key? key}) : super(key: key);
@@ -30,7 +30,7 @@ class _landingState extends State<landing> {
       setState(() {
         _isLoading = false;
       });
-      Navigator.pushNamed(context, '/sample');
+      Navigator.pushNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         setState(() {
