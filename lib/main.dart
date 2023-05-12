@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'landing.dart';
 import 'home.dart';
 
+
 import 'samples/sample.dart';
 import 'samples/sample2.dart';
 
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: landing(),
+      //   home: homePage(),
       routes: {
         '/landing': (context) => landing(),
         '/home': (context) => homePage(),

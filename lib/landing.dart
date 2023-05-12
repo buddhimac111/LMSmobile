@@ -25,12 +25,12 @@ class _landingState extends State<landing> {
       print(userCredential.user!.uid);
 
       UserDetails.uid = userCredential.user!.uid;
+      UserDetails.email = userCredential.user!.email.toString();
       await UserDetails.getDetails();
-
+      Navigator.pushNamed(context, '/home');
       setState(() {
         _isLoading = false;
       });
-      Navigator.pushNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         setState(() {

@@ -6,6 +6,7 @@ import '../samples/sample.dart';
 
 class UserDetails {
   static String uid = '';
+  static String email = '';
 
   static String username = '';
   static String fullname = '';
