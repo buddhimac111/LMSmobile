@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
-import 'profile_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'profile_view.dart';
+import 'timetable.dart';
+import 'modules.dart';
 
 class homePage extends StatefulWidget {
   const homePage({
@@ -98,14 +101,7 @@ class _homePageState extends State<homePage> {
           physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           children: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              child: Icon(
-                Icons.email_rounded,
-                size: 56,
-                color: Colors.green[400],
-              ),
-            ),
+            MyStorageScreen(),
             Container(
               alignment: Alignment.center,
               child: Icon(
@@ -114,14 +110,7 @@ class _homePageState extends State<homePage> {
                 color: Colors.red[400],
               ),
             ),
-            Container(
-              alignment: Alignment.center,
-              child: Icon(
-                Icons.favorite_rounded,
-                size: 56,
-                color: Colors.red[400],
-              ),
-            ),
+            timetable(),
             ProfileDetails(),
             // ProfileDetails(),
           ],
