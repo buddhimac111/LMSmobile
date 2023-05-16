@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'package:open_file/open_file.dart';
+import 'package:android_intent_plus/android_intent.dart';
+
+
+
 
 class MyStorageScreen extends StatefulWidget {
   @override
@@ -80,19 +85,55 @@ class _MyFolderScreenState extends State<MyFolderScreen> {
   }
 
   Future<void> _downloadFile(Reference ref) async {
-    final String fileName = '${ref.name}';
+
+ //download file and save to local storage and display on phone internal storage and display it on file manager
+ //
+ //    final String fileName = '${ref.name}';
+ //    final String url = await ref.getDownloadURL();
+ //    final Directory? appDirectory = await getExternalStorageDirectory();
+ //    final String filePath = '${appDirectory?.path}/$fileName';
+ //    final List<int> bytes = await http.readBytes(Uri.parse(url));
+ //    final File file = File(filePath);
+ //    await file.writeAsBytes(bytes);
+ //
+ //    // Scan the downloaded file and make it available in the device's file manager
+ //    final AndroidIntent intent = AndroidIntent(
+ //      action: 'android.intent.action.MEDIA_SCANNER_SCAN_FILE',
+ //      data: Uri.parse('file://$filePath').toString(),
+ //    );
+ //    await intent.launch();
+ //
+ //    ScaffoldMessenger.of(context).showSnackBar(
+ //      SnackBar(
+ //        content: Text('File downloaded successfully'),
+ //      ),
+ //    );
+ //    OpenFile.open(filePath);
+ //    Navigator.of(context).pop(); // Add this line to close the dialog
+
     final String url = await ref.getDownloadURL();
-    final Directory appDirectory = await getApplicationDocumentsDirectory();
-    final String filePath = '${appDirectory.path}/$fileName';
-    final http.Response downloadData = await http.get(Uri.parse(url));
-    final File file = File(filePath);
-    await file.writeAsBytes(downloadData.bodyBytes);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('File downloaded successfully'),
-      ),
+    final String filename = ref.name;
+    final Directory systemTempDir = Directory.systemTemp;
+    final File tempFile = File('${systemTempDir.path}/$filename');
+    if (tempFile.existsSync()) {
+      await tempFile.delete();
+    }
+    await tempFile.create();
+    final http.Response response = await http.get(Uri.parse(url));
+    await tempFile.writeAsBytes(response.bodyBytes);
+    await OpenFile.open(tempFile.path);
+    final AndroidIntent intent = AndroidIntent(
+      action: 'action_view',
+      data: Uri.parse(url).toString(),
+      type: 'application/pdf',
     );
+    await intent.launch();
+
+
+
+
   }
+
 
   @override
   Widget build(BuildContext context) {

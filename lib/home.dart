@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'profile_view.dart';
 import 'timetable.dart';
 import 'modules.dart';
+import 'batches.dart';
 
 class homePage extends StatefulWidget {
   const homePage({
@@ -101,7 +102,8 @@ class _homePageState extends State<homePage> {
           physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           children: <Widget>[
-            MyStorageScreen(),
+            // MyStorageScreen(),
+            FOCFilesScreen(folderPath: 'foc/'),
             Container(
               alignment: Alignment.center,
               child: Icon(
