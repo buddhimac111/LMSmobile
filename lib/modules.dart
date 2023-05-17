@@ -117,7 +117,6 @@ class _MyFolderScreenState extends State<MyFolderScreen> {
     final AndroidIntent intent = AndroidIntent(
       action: 'action_view',
       data: Uri.parse(url).toString(),
-      type: 'application/pdf',
     );
     await intent.launch();
   }

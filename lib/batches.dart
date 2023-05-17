@@ -11,10 +11,6 @@ import 'package:path/path.dart' as path;
 import 'services/userManage.dart';
 import 'package:file_picker/file_picker.dart';
 
-String faculty = UserDetails.faculty;
-//facShort hardcoded for testing only
-String facShort = 'foc';
-
 class subDir {
   static String subDirName = '';
 }
@@ -26,6 +22,8 @@ class LectuersHome extends StatefulWidget {
 
 class _LectuersHomeState extends State<LectuersHome> {
   List<Reference> _folders = [];
+  String faculty = UserDetails.faculty;
+  String facShort = '';
 
   @override
   void initState() {
@@ -34,6 +32,13 @@ class _LectuersHomeState extends State<LectuersHome> {
   }
 
   Future<void> _listFolders() async {
+    if (faculty == 'Computing') {
+      facShort = 'foc';
+    } else if (faculty == 'Business') {
+      facShort = 'fob';
+    } else if (faculty == 'Science') {
+      facShort = 'fos';
+    }
 
     FirebaseStorage storage = FirebaseStorage.instance;
     ListResult result = await storage.ref().child('$facShort').listAll();
@@ -78,6 +83,8 @@ class SubFolderScreen extends StatefulWidget {
 
 class _SubFolderScreenState extends State<SubFolderScreen> {
   List<Reference> _subfolders = [];
+  String faculty = UserDetails.faculty;
+  String facShort = '';
 
   IconData _getFileIcon(String fileName) {
     String extension = path.extension(fileName).toLowerCase();
@@ -104,6 +111,13 @@ class _SubFolderScreenState extends State<SubFolderScreen> {
   }
 
   Future<void> _listSubFolders() async {
+    if (faculty == 'Computing') {
+      facShort = 'foc';
+    } else if (faculty == 'Business') {
+      facShort = 'fob';
+    } else if (faculty == 'Science') {
+      facShort = 'fos';
+    }
     FirebaseStorage storage = FirebaseStorage.instance;
     ListResult result =
         await storage.ref().child('$facShort/${widget.subfolderRef}').listAll();
@@ -152,6 +166,8 @@ class FilesScreen extends StatefulWidget {
 
 class _FilesScreenState extends State<FilesScreen> {
   List<Reference> _files = [];
+  String faculty = UserDetails.faculty;
+  String facShort = '';
 
   @override
   void initState() {
@@ -170,6 +186,13 @@ class _FilesScreenState extends State<FilesScreen> {
 /////////////////////////////upload file to firebase storage//////////////////////////////
 
   Future<void> _uploadFile(File file) async {
+    if (faculty == 'Computing') {
+      facShort = 'foc';
+    } else if (faculty == 'Business') {
+      facShort = 'fob';
+    } else if (faculty == 'Science') {
+      facShort = 'fos';
+    }
     String fileName = file.path.split('/').last;
 
     try {
@@ -183,8 +206,8 @@ class _FilesScreenState extends State<FilesScreen> {
         },
       );
 
-      Reference storageRef =
-          FirebaseStorage.instance.ref('$facShort/${subDir.subDirName}/${widget.folderRef.name}/$fileName');
+      Reference storageRef = FirebaseStorage.instance.ref(
+          '$facShort/${subDir.subDirName}/${widget.folderRef.name}/$fileName');
       await storageRef.putFile(file);
 
       Navigator.of(context).pop(); // Close the uploading dialog
@@ -198,8 +221,9 @@ class _FilesScreenState extends State<FilesScreen> {
             actions: [
               TextButton(
                 child: Text('OK'),
-                onPressed: () {
+                onPressed: () async {
                   Navigator.of(context).pop();
+                  await _refreshFiles();
                 },
               ),
             ],
@@ -288,6 +312,42 @@ class _FilesScreenState extends State<FilesScreen> {
     await intent.launch();
   }
 
+  Future<void> _deleteFile(Reference ref) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete File'),
+          content: Text('confirm delete? ${ref.name}'),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await ref.delete();
+                await _refreshFiles();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _refreshFiles() async {
+    ListResult result = await widget.folderRef.listAll();
+    List<Reference> refs = result.items;
+    setState(() {
+      _files = refs;
+    });
+  }
+
   IconData _getFileIcon(String fileName) {
     String extension = path.extension(fileName).toLowerCase();
     switch (extension) {
@@ -320,32 +380,47 @@ class _FilesScreenState extends State<FilesScreen> {
       appBar: AppBar(
         title: Text(widget.folderRef.name),
       ),
-      body: ListView.builder(
+      body: ListView.builder (
         itemCount: _files.length,
         itemBuilder: (context, index) {
           Reference file = _files[index];
           String fileName = file.name;
           IconData fileIcon = _getFileIcon(fileName);
+          String extension = path.extension(fileName).replaceFirst('.', '').toUpperCase();
+          String fileNameWithoutExtension = path.basenameWithoutExtension(fileName);
+
           return Card(
             child: ListTile(
               leading: Icon(fileIcon),
-              title: Text(fileName),
-              subtitle: Text('File'),
-              trailing: IconButton(
-                icon: Icon(Icons.download_rounded),
-                onPressed: () async {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Fetching...'),
-                        content: LinearProgressIndicator(),
+              title: Text(fileNameWithoutExtension),
+              subtitle: Text(extension),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.download_rounded),
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Fetching...'),
+                            content: LinearProgressIndicator(),
+                          );
+                        },
                       );
+                      await _downloadFile(file);
+                      Navigator.of(context).pop();
                     },
-                  );
-                  await _downloadFile(file);
-                  Navigator.of(context).pop();
-                },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () async {
+                      // Perform delete operation
+                      await _deleteFile(file);
+                    },
+                  ),
+                ],
               ),
             ),
           );
