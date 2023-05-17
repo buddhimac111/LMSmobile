@@ -1,10 +1,23 @@
+import 'dart:typed_data';
+
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:path/path.dart' as path;
+import 'services/userManage.dart';
+import 'package:file_picker/file_picker.dart';
+
+String faculty = UserDetails.faculty;
+//facShort hardcoded for testing only
+String facShort = 'foc';
+
+class subDir {
+  static String subDirName = '';
+}
 
 class LectuersHome extends StatefulWidget {
   @override
@@ -21,8 +34,9 @@ class _LectuersHomeState extends State<LectuersHome> {
   }
 
   Future<void> _listFolders() async {
+
     FirebaseStorage storage = FirebaseStorage.instance;
-    ListResult result = await storage.ref().child('foc').listAll();
+    ListResult result = await storage.ref().child('$facShort').listAll();
     List<Reference> refs = result.prefixes;
     setState(() {
       _folders = refs;
@@ -92,11 +106,12 @@ class _SubFolderScreenState extends State<SubFolderScreen> {
   Future<void> _listSubFolders() async {
     FirebaseStorage storage = FirebaseStorage.instance;
     ListResult result =
-        await storage.ref().child('foc/${widget.subfolderRef}').listAll();
+        await storage.ref().child('$facShort/${widget.subfolderRef}').listAll();
     List<Reference> refs = result.prefixes;
     setState(() {
       _subfolders = refs;
     });
+    subDir.subDirName = widget.subfolderRef;
   }
 
   @override
@@ -126,7 +141,6 @@ class _SubFolderScreenState extends State<SubFolderScreen> {
 }
 
 //sub
-
 class FilesScreen extends StatefulWidget {
   final Reference folderRef;
 
@@ -152,6 +166,107 @@ class _FilesScreenState extends State<FilesScreen> {
       _files = refs;
     });
   }
+
+/////////////////////////////upload file to firebase storage//////////////////////////////
+
+  Future<void> _uploadFile(File file) async {
+    String fileName = file.path.split('/').last;
+
+    try {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Uploading...'),
+            content: LinearProgressIndicator(),
+          );
+        },
+      );
+
+      Reference storageRef =
+          FirebaseStorage.instance.ref('$facShort/${subDir.subDirName}/${widget.folderRef.name}/$fileName');
+      await storageRef.putFile(file);
+
+      Navigator.of(context).pop(); // Close the uploading dialog
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Upload Complete'),
+            content: Text('File uploaded successfully!'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } catch (e) {
+      print(e);
+      Navigator.of(context).pop(); // Close the uploading dialog
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Upload Failed'),
+            content: Text('An error occurred while uploading the file.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////
+
+  ///////////////////////////pick file from device///////////////////////////////////////////
+  Future<void> _pickAndUploadFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      String fileName = result.files.single.name!;
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Confirm Upload'),
+            content: Text('Upload file: $fileName?'),
+            actions: [
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text('OK'),
+                onPressed: () async {
+                  Navigator.of(context).pop(); // Close the dialog
+                  await _uploadFile(file);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+//////////////////////////////////////////////////////////
 
   Future<void> _downloadFile(Reference ref) async {
     final String url = await ref.getDownloadURL();
@@ -235,6 +350,10 @@ class _FilesScreenState extends State<FilesScreen> {
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: _pickAndUploadFile,
       ),
     );
   }

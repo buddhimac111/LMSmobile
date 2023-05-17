@@ -75,7 +75,8 @@ class _homePageState extends State<homePage> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: Text("Error"),
-                              content: Text("logout failed maybe network error"),
+                              content:
+                                  Text("logout failed maybe network error"),
                               actions: [
                                 TextButton(
                                   child: Text("ok"),

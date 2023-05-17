@@ -17,8 +17,6 @@ class UserDetails {
   static String role = '';
   static String contact = '';
 
-
-
   static String doa = '';
   static String batch = '';
   static String degree = '';
@@ -27,7 +25,8 @@ class UserDetails {
 
   static Future<void> getDetails() async {
     try {
-      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      DocumentSnapshot documentSnapshot =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
       username = documentSnapshot.get('username').toString();
       fullname = documentSnapshot.get('fullname').toString();
       uniid = documentSnapshot.get('uniid').toString();
@@ -40,6 +39,7 @@ class UserDetails {
       batch = documentSnapshot.get('batch').toString();
       degree = documentSnapshot.get('degree').toString();
       doj = documentSnapshot.get('doj').toString();
+
 
       print(username);
       print(fullname);
@@ -59,5 +59,3 @@ class UserDetails {
     }
   }
 }
-
-

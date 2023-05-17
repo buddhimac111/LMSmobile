@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lms/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'services/userManage.dart';
 
 class landing extends StatefulWidget {
@@ -32,10 +31,26 @@ class _landingState extends State<landing> {
         _isLoading = false;
       });
     } on FirebaseAuthException catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Invalid Credentials"),
+              content: Text("Check your Email and Password"),
+              actions: [
+                TextButton(
+                  child: Text("Close"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
       if (e.code == 'user-not-found') {
-        setState(() {
-          _isLoading = false;
-        });
         print('No user found for that email.');
         showDialog(
             context: context,
@@ -55,9 +70,6 @@ class _landingState extends State<landing> {
             });
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that email.');
-        setState(() {
-          _isLoading = false;
-        });
         showDialog(
             context: context,
             builder: (BuildContext context) {

@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:android_intent_plus/android_intent.dart';
+import 'services/userManage.dart';
 
-
-
+//////////////Folders list////////////////////
 
 class StudentsHome extends StatefulWidget {
   @override
@@ -17,15 +17,32 @@ class StudentsHome extends StatefulWidget {
 class _StudentsHomeState extends State<StudentsHome> {
   List<Reference> _folders = [];
 
+  String faculty = UserDetails.faculty;
+  String facShort = '';
+
   @override
   void initState() {
     super.initState();
     _listFolders();
   }
 
+//${UserDetails.facShort}/${UserDetails.batch} ${UserDetails.degree}
+
   Future<void> _listFolders() async {
+
+    if (faculty == 'Computing') {
+      facShort = 'foc';
+    } else if (faculty == 'Business') {
+      facShort = 'fob';
+    } else if (faculty == 'Science') {
+      facShort = 'fos';
+    }
+
     FirebaseStorage storage = FirebaseStorage.instance;
-    ListResult result = await storage.ref().child('foc/21.1 SE').listAll();
+    ListResult result = await storage
+        .ref()
+        .child('$facShort/${UserDetails.batch} ${UserDetails.degree}')
+        .listAll();
     List<Reference> refs = result.prefixes;
     setState(() {
       _folders = refs;
@@ -55,6 +72,10 @@ class _StudentsHomeState extends State<StudentsHome> {
   }
 }
 
+////////////////////////////////////////////////////////
+
+//////////////////////Files list///////////////////////
+
 class MyFolderScreen extends StatefulWidget {
   final Reference folderRef;
 
@@ -82,7 +103,6 @@ class _MyFolderScreenState extends State<MyFolderScreen> {
   }
 
   Future<void> _downloadFile(Reference ref) async {
-
     final String url = await ref.getDownloadURL();
     final String filename = ref.name;
     final Directory systemTempDir = Directory.systemTemp;
@@ -100,12 +120,7 @@ class _MyFolderScreenState extends State<MyFolderScreen> {
       type: 'application/pdf',
     );
     await intent.launch();
-
-
-
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -140,3 +155,4 @@ class _MyFolderScreenState extends State<MyFolderScreen> {
     );
   }
 }
+////////////////////////////////////////////////////////
