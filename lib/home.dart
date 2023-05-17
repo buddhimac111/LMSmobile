@@ -7,6 +7,7 @@ import 'profile_view.dart';
 import 'timetable.dart';
 import 'modules.dart';
 import 'batches.dart';
+import 'services/userManage.dart';
 
 class homePage extends StatefulWidget {
   const homePage({
@@ -102,8 +103,8 @@ class _homePageState extends State<homePage> {
           physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           children: <Widget>[
-            // MyStorageScreen(),
-            FOCFilesScreen(folderPath: 'foc/'),
+            if (UserDetails.role == 'Student') StudentsHome(),
+            if (UserDetails.role == 'Lecturer') LectuersHome(),
             Container(
               alignment: Alignment.center,
               child: Icon(

@@ -124,6 +124,7 @@ class _landingState extends State<landing> {
                       margin: const EdgeInsets.only(top: 20.0),
                     ),
                     TextField(
+                      obscureText: true,
                       controller: passwordController,
                       decoration: const InputDecoration(
                         enabledBorder: UnderlineInputBorder(

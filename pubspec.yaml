@@ -47,6 +47,7 @@ dependencies:
   media_scanner_scan_file: ^0.0.4
   android_intent_plus: ^4.0.0
   file_picker: ^5.3.0
+  filesize: ^2.0.1
 
 
   # The following adds the Cupertino Icons font to your application.

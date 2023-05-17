@@ -9,12 +9,12 @@ import 'package:android_intent_plus/android_intent.dart';
 
 
 
-class MyStorageScreen extends StatefulWidget {
+class StudentsHome extends StatefulWidget {
   @override
-  _MyStorageScreenState createState() => _MyStorageScreenState();
+  _StudentsHomeState createState() => _StudentsHomeState();
 }
 
-class _MyStorageScreenState extends State<MyStorageScreen> {
+class _StudentsHomeState extends State<StudentsHome> {
   List<Reference> _folders = [];
 
   @override
@@ -35,9 +35,6 @@ class _MyStorageScreenState extends State<MyStorageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('My Storage Screen'),
-      ),
       body: ListView.builder(
         itemCount: _folders.length,
         itemBuilder: (context, index) {
@@ -86,31 +83,6 @@ class _MyFolderScreenState extends State<MyFolderScreen> {
 
   Future<void> _downloadFile(Reference ref) async {
 
- //download file and save to local storage and display on phone internal storage and display it on file manager
- //
- //    final String fileName = '${ref.name}';
- //    final String url = await ref.getDownloadURL();
- //    final Directory? appDirectory = await getExternalStorageDirectory();
- //    final String filePath = '${appDirectory?.path}/$fileName';
- //    final List<int> bytes = await http.readBytes(Uri.parse(url));
- //    final File file = File(filePath);
- //    await file.writeAsBytes(bytes);
- //
- //    // Scan the downloaded file and make it available in the device's file manager
- //    final AndroidIntent intent = AndroidIntent(
- //      action: 'android.intent.action.MEDIA_SCANNER_SCAN_FILE',
- //      data: Uri.parse('file://$filePath').toString(),
- //    );
- //    await intent.launch();
- //
- //    ScaffoldMessenger.of(context).showSnackBar(
- //      SnackBar(
- //        content: Text('File downloaded successfully'),
- //      ),
- //    );
- //    OpenFile.open(filePath);
- //    Navigator.of(context).pop(); // Add this line to close the dialog
-
     final String url = await ref.getDownloadURL();
     final String filename = ref.name;
     final Directory systemTempDir = Directory.systemTemp;
@@ -153,7 +125,7 @@ class _MyFolderScreenState extends State<MyFolderScreen> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text('Downloading...'),
+                      title: Text('Fetching...'),
                       content: LinearProgressIndicator(),
                     );
                   },
