@@ -31,6 +31,20 @@ class _ProfileState extends State<ProfileDetails> {
             const SizedBox(
               height: 10,
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  child: Text(
+                    UserDetails.fullname,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             const Divider(
               thickness: 1,
             ),
