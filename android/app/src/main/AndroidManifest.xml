@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nsbm.ac.lk.lms">
    <application
-        android:label="lms"
+        android:label="UniLearn"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
