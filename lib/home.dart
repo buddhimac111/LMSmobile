@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lms/sidebar/sidebar.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -39,6 +40,7 @@ class _homePageState extends State<homePage> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
+        drawer: const Sidebar(),
         appBar: AppBar(
           title: Text('Home'),
           backgroundColor: Colors.deepPurple,
@@ -52,13 +54,43 @@ class _homePageState extends State<homePage> {
               child: PopupMenuButton<String>(
                 itemBuilder: (BuildContext context) {
                   return [
-                    PopupMenuItem<String>(
+                    PopupMenuItem(
                       value: 'faq',
-                      child: Text('FAQs'),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Expanded(
+                            child: Text(
+                              'Faq',
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          SizedBox(width: 6),
+                          Icon(
+                            Icons.help,
+                            color: Colors.blue,
+                          ),
+                        ],
+                      ),
                     ),
-                    PopupMenuItem<String>(
+                    PopupMenuItem(
                       value: 'logout',
-                      child: Text('Logout'),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Expanded(
+                            child: Text(
+                              'Log Out',
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          SizedBox(width: 6,),
+                          Icon(
+                            Icons.logout,
+                            color: Colors.blue,
+                          ),
+                        ],
+                      ),
                     ),
                   ];
                 },
@@ -136,8 +168,8 @@ class _homePageState extends State<homePage> {
               outlinedIcon: Icons.roofing_rounded,
             ),
             BarItem(
-                filledIcon: Icons.favorite_rounded,
-                outlinedIcon: Icons.favorite_border_rounded),
+                filledIcon: Icons.document_scanner,
+                outlinedIcon: Icons.document_scanner_outlined),
             BarItem(
               filledIcon: Icons.today_rounded,
               outlinedIcon: Icons.calendar_month_rounded,
