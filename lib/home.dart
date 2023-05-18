@@ -46,7 +46,7 @@ class _homePageState extends State<homePage> {
       child: Scaffold(
         drawer: const Sidebar(),
         appBar: AppBar(
-          title: Text('Home'),
+          title: Text('UniLearn'),
           backgroundColor: customColors.primary,
           leading: Container(
             padding: EdgeInsets.all(5.0),
@@ -126,7 +126,7 @@ class _homePageState extends State<homePage> {
                     }
                   }
                   if (value == 'faq') {
-                    // Navigator.pushNamed(context, '/faq');
+                    Navigator.pushNamed(context, '/faq');
                     print("FAQ");
                   }
                 },

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'landing.dart';
 import 'home.dart';
+import 'faq.dart';
 
 
 import 'results.dart';
@@ -51,6 +52,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/landing': (context) => landing(),
         '/home': (context) => homePage(),
+        '/faq': (context) => FAQPage(),
+
       }
     );
   }

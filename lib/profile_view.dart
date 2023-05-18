@@ -23,7 +23,7 @@ class _ProfileState extends State<ProfileDetails> {
                   height: 115,
                   width: 115,
                   child: CircleAvatar(
-                    backgroundImage: AssetImage("assets/hh.jpg"),
+                    backgroundImage: AssetImage("assets/images/tt.jpg"),
                   ),
                 ),
               ],

@@ -162,7 +162,13 @@ class _ResultsPageState extends State<ResultsPage> {
               const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               expandedCrossAxisAlignment: CrossAxisAlignment.end,
               maintainState: true,
-              title: Text('1st Year | Semester 1'),
+              title: Text(
+                '1st Year | Semester 1',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold, // Make the title bold
+                ),
+              ),
               children: [
                 DataTable(
                   columns: [
@@ -183,7 +189,13 @@ class _ResultsPageState extends State<ResultsPage> {
               const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               expandedCrossAxisAlignment: CrossAxisAlignment.end,
               maintainState: true,
-              title: Text('1st Year | Semester 2'),
+              title: Text(
+                '1st Year | Semester 2',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold, // Make the title bold
+                ),
+              ),
               children: [
                 DataTable(
                   columns: [
@@ -205,7 +217,13 @@ class _ResultsPageState extends State<ResultsPage> {
               const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               expandedCrossAxisAlignment: CrossAxisAlignment.end,
               maintainState: true,
-              title: Text('2nd Year | Semester 1'),
+              title: Text(
+                '2nd Year | Semester 1',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold, // Make the title bold
+                ),
+              ),
               children: [
                 DataTable(
                   columns: [
@@ -227,7 +245,13 @@ class _ResultsPageState extends State<ResultsPage> {
               const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               expandedCrossAxisAlignment: CrossAxisAlignment.end,
               maintainState: true,
-              title: Text('2nd Year | Semester 2'),
+              title: Text(
+                '2nd Year | Semester 2',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold, // Make the title bold
+                ),
+              ),
               children: [
                 DataTable(
                   columns: [
@@ -249,7 +273,13 @@ class _ResultsPageState extends State<ResultsPage> {
               const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               expandedCrossAxisAlignment: CrossAxisAlignment.end,
               maintainState: true,
-              title: Text('3rd Year | Semester 1'),
+              title: Text(
+              '3rd Year | Semester 1',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold, // Make the title bold
+              ),
+            ),
               children: [
                 DataTable(
                   columns: [
@@ -271,7 +301,13 @@ class _ResultsPageState extends State<ResultsPage> {
               const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               expandedCrossAxisAlignment: CrossAxisAlignment.end,
               maintainState: true,
-              title: Text('3rd Year | Semester 2'),
+              title: Text(
+                '3rd Year | Semester 2',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold, // Make the title bold
+                ),
+              ),
               children: [
                 DataTable(
                   columns: [
