@@ -1,6 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:lms/main.dart';
+import 'package:path/path.dart' as path;
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:open_file/open_file.dart';
@@ -26,9 +27,9 @@ class _StudentsHomeState extends State<StudentsHome> {
     _listFolders();
   }
 
-//${UserDetails.facShort}/${UserDetails.batch} ${UserDetails.degree}
 
   Future<void> _listFolders() async {
+
     if (faculty == 'Computing') {
       facShort = 'foc';
     } else if (faculty == 'Business') {
@@ -55,71 +56,59 @@ class _StudentsHomeState extends State<StudentsHome> {
         itemCount: _folders.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.all(3.0),
-            child: Center(
-              child: Wrap(spacing: 20.0, runSpacing: 20.0, children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: 380.0,
-                      height: 143.0,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      MyFolderScreen(_folders[index])));
-                        },
-                        splashColor: Colors.blue,
-                        child: Card(
-                          color: Colors.blue,
-                          elevation: 2.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.library_books,
-                                    size: 45.0,
-                                  ),
-                                  const VerticalDivider(
-                                    color: Colors.white,
-                                    thickness: 1.0,
-                                    width: 20.0,
-                                  ),
-                                  const SizedBox(height: 10.0),
-                                  Center(
-                                    child: Text(
-                                      _folders[index].name,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        // fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+            padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0), // Adjust horizontal and vertical padding values
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyFolderScreen(_folders[index]),
+                  ),
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.only(top: 8.0), // Add a gap from the top
+                height: 100, // Adjust the height of the box as needed
+                decoration: BoxDecoration(
+                  color: customColors.secondary,
+                  borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 1, // Reduce the spread radius
+                      blurRadius: 2, // Reduce the blur radius
                     ),
                   ],
                 ),
-              ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.local_library_rounded,
+                        size: 40,
+                        color: customColors.primary,
+                      ),
+                      SizedBox(width: 16),
+                      Text(
+                        _folders[index].name,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           );
         },
       ),
     );
   }
+
+
 }
 
 ////////////////////////////////////////////////////////
@@ -137,13 +126,38 @@ class MyFolderScreen extends StatefulWidget {
 
 class _MyFolderScreenState extends State<MyFolderScreen> {
   List<Reference> _files = [];
-  // bool hasUserAccessed = true; // Example boolean indicating user access
 
   @override
   void initState() {
     super.initState();
     _listFiles();
   }
+  IconData _getFileIcon(String fileName) {
+    String extension = path.extension(fileName).toLowerCase();
+    switch (extension) {
+      case '.pdf':
+        return Icons.picture_as_pdf;
+      case '.doc':
+      case '.docx':
+      case '.ppt':
+      case '.pptx':
+      case '.xls':
+      case '.xlsx':
+        return Icons.description;
+      case '.jpg':
+      case '.jpeg':
+      case '.png':
+        return Icons.image;
+      case '.mp4':
+        return Icons.video_collection;
+      case '.mp3':
+        return Icons.music_note;
+// Add more cases for other file extensions as needed
+      default:
+        return Icons.insert_drive_file;
+    }
+  }
+
 
   Future<void> _listFiles() async {
     ListResult result = await widget.folderRef.listAll();
@@ -171,94 +185,63 @@ class _MyFolderScreenState extends State<MyFolderScreen> {
     );
     await intent.launch();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: Text(widget.folderRef.name),
-        title: Text("Lecture Materials"),
+        title: Text(widget.folderRef.name),
+        backgroundColor: customColors.primary,
       ),
-      body: ListView.builder(
+      body: ListView.builder (
         itemCount: _files.length,
         itemBuilder: (context, index) {
-          // final lessonText = _files[index];
-          // final lessonNumber = extractLessonNumber(lessonText as String);
-          return Padding(
-            padding: const EdgeInsets.all(3.0),
-            child: Center(
-              child: Wrap(spacing: 20.0, runSpacing: 10.0, children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                      width: 380.0,
-                      height: 80.0,
-                      child: InkWell(
-                        onTap: () async {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Please Wait.'),
-                                content: LinearProgressIndicator(),
-                              );
-                            },
+          Reference file = _files[index];
+          String fileName = file.name;
+          IconData fileIcon = _getFileIcon(fileName);
+          String extension = path.extension(fileName).replaceFirst('.', '').toUpperCase();
+          String fileNameWithoutExtension = path.basenameWithoutExtension(fileName);
+
+          return Card(
+            color: customColors.fileListBackground,
+            child: ListTile(
+              leading: Icon(fileIcon, color: customColors.fileListText),
+              title: Text(
+                fileNameWithoutExtension,
+                style: TextStyle(color: customColors.black),
+              ),
+              subtitle: Text(
+                extension,
+                style: TextStyle(color: customColors.fileListText),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.download_rounded, color: customColors.fileListText),
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Fetching...', style: TextStyle(color: customColors.alertText)), // Set dialog title text color to white
+                            content: LinearProgressIndicator(),
+                            backgroundColor: customColors.alertBackground, // Set dialog background color to blue
                           );
-                          await _downloadFile(_files[index]);
-                          Navigator.of(context).pop();
                         },
-                        splashColor: Colors.blue,
-                        child: Card(
-                          // color: hasUserAccessed
-                          //     ? Colors.green
-                          //     : Colors
-                          //         .blue, // Change color based on user access
-                          color: Colors.blue,
-                          elevation: 2.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListTile(
-                                leading: Icon(Icons.insert_drive_file_outlined),
-                                // VerticalDivider(
-                                //   color: Colors.white,
-                                //   thickness: 1.0,
-                                //   width: 20.0,
-                                // ),
-                                title: Text(
-                                  widget.folderRef.name,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    // fontWeight: FontWeight.bold,
-                                    // fontSize: 20.0,
-                                  ),
-                                ),
-                                subtitle: Text(_files[index].name),
-                                trailing: Icon(Icons.download_sharp),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ]),
+                      );
+                      await _downloadFile(file);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
             ),
           );
+
         },
       ),
     );
   }
-  // int extractLessonNumber(String lessonText) {
-  //   final pattern = RegExp(r'Lesson (\d+)');
-  //   final match = pattern.firstMatch(lessonText);
-  //   final numberString = match?.group(1) ?? 'N/A';
-  //   return int.tryParse(numberString) ?? -1;
-  // }
+
 }
 ////////////////////////////////////////////////////////

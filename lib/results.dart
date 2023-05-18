@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:lms/main.dart';
 import 'services/userManage.dart';
 import 'dart:convert';
 
@@ -154,7 +155,7 @@ class _ResultsPageState extends State<ResultsPage> {
         children: <Widget>[
           // year 1 semester 1
           Card(
-            color: Colors.amber.shade200,
+            color: customColors.secondary,
             elevation: 4,
             child: ExpansionTile(
               childrenPadding:
@@ -175,7 +176,7 @@ class _ResultsPageState extends State<ResultsPage> {
           ),
           // year 1 semester 2
           Card(
-            color: Colors.amber.shade200,
+            color: customColors.secondary,
             elevation: 4,
             child: ExpansionTile(
               childrenPadding:
@@ -197,7 +198,7 @@ class _ResultsPageState extends State<ResultsPage> {
 
           // year 2 semester 1
           Card(
-            color: Colors.amber.shade200,
+            color: customColors.secondary,
             elevation: 4,
             child: ExpansionTile(
               childrenPadding:
@@ -219,7 +220,7 @@ class _ResultsPageState extends State<ResultsPage> {
 
           // year 2 semester 2
           Card(
-            color: Colors.amber.shade200,
+            color: customColors.secondary,
             elevation: 4,
             child: ExpansionTile(
               childrenPadding:
@@ -241,7 +242,7 @@ class _ResultsPageState extends State<ResultsPage> {
 
           // year 3 semester 1
           Card(
-            color: Colors.amber.shade200,
+            color: customColors.secondary,
             elevation: 4,
             child: ExpansionTile(
               childrenPadding:
@@ -263,7 +264,7 @@ class _ResultsPageState extends State<ResultsPage> {
 
           // year 3 semester 2
           Card(
-            color: Colors.amber.shade200,
+            color: customColors.secondary,
             elevation: 4,
             child: ExpansionTile(
               childrenPadding:

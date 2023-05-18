@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lms/main.dart';
 import 'package:lms/sidebar/sidebar.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +10,7 @@ import 'timetable.dart';
 import 'modules.dart';
 import 'batches.dart';
 import 'results.dart';
+import 'timetable.dart';
 import 'services/userManage.dart';
 
 
@@ -45,7 +47,7 @@ class _homePageState extends State<homePage> {
         drawer: const Sidebar(),
         appBar: AppBar(
           title: Text('Home'),
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: customColors.primary,
           leading: Container(
             padding: EdgeInsets.all(5.0),
             child: Image.asset('assets/images/logobl.png'),
@@ -70,7 +72,7 @@ class _homePageState extends State<homePage> {
                           SizedBox(width: 6),
                           Icon(
                             Icons.help,
-                            color: Colors.blue,
+                            color: customColors.primary,
                           ),
                         ],
                       ),
@@ -89,7 +91,7 @@ class _homePageState extends State<homePage> {
                           SizedBox(width: 6,),
                           Icon(
                             Icons.logout,
-                            color: Colors.blue,
+                            color: customColors.primary,
                           ),
                         ],
                       ),
@@ -148,6 +150,7 @@ class _homePageState extends State<homePage> {
         ),
         bottomNavigationBar: WaterDropNavBar(
           backgroundColor: navigationBarColor,
+          waterDropColor: customColors.primary,
           onItemSelected: (int index) {
             setState(() {
               selectedIndex = index;

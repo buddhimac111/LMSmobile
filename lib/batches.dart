@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lms/main.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:android_intent_plus/android_intent.dart';
@@ -54,21 +55,46 @@ class _LectuersHomeState extends State<LectuersHome> {
       body: ListView.builder(
         itemCount: _folders.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_folders[index].name),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SubFolderScreen(_folders[index].name),
+          return Container(
+            height: 90, // Adjust the height as needed
+            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Card(
+              color: customColors.secondary,
+              child: ListTile(
+                leading: Icon(
+                  Icons.groups_rounded,
+                  color: customColors.primary, // Adjust the icon color here
                 ),
-              );
-            },
+                title: Text(
+                  _folders[index].name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios_sharp,
+                  color: customColors.primary, // Adjust the icon color here
+                ),
+                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          SubFolderScreen(_folders[index].name),
+                    ),
+                  );
+                },
+              ),
+            ),
           );
         },
       ),
     );
   }
+
+
+
 }
 
 //sub
@@ -133,25 +159,46 @@ class _SubFolderScreenState extends State<SubFolderScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.subfolderRef),
+        backgroundColor: customColors.primary,
       ),
       body: ListView.builder(
         itemCount: _subfolders.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_subfolders[index].name),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FilesScreen(_subfolders[index]),
-                ),
-              );
-            },
+          return Card(
+            elevation: 2.0,
+            margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+            color: customColors.secondary,
+            child: ListTile(
+              contentPadding:
+              EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              leading: Icon(
+                Icons.folder,
+                color: customColors.primary, // Adjust the icon color here
+              ),
+              title: Text(
+                _subfolders[index].name,
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+              trailing: Icon(
+                Icons.arrow_forward_ios_sharp,
+                color: customColors.primary, // Adjust the icon color here
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FilesScreen(_subfolders[index]),
+                  ),
+                );
+              },
+            ),
           );
         },
       ),
     );
   }
+
+
 }
 
 //sub
@@ -379,6 +426,7 @@ class _FilesScreenState extends State<FilesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.folderRef.name),
+        backgroundColor: customColors.primary,
       ),
       body: ListView.builder (
         itemCount: _files.length,
@@ -390,21 +438,28 @@ class _FilesScreenState extends State<FilesScreen> {
           String fileNameWithoutExtension = path.basenameWithoutExtension(fileName);
 
           return Card(
+            color: customColors.fileListBackground,
             child: ListTile(
-              leading: Icon(fileIcon),
-              title: Text(fileNameWithoutExtension),
-              subtitle: Text(extension),
+              leading: Icon(fileIcon, color: customColors.fileListText),
+              title: Text(
+                fileNameWithoutExtension,
+                style: TextStyle(color: customColors.black),
+              ),
+              subtitle: Text(
+                extension,
+                style: TextStyle(color: customColors.fileListText),
+              ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.download_rounded),
+                    icon: Icon(Icons.download_rounded,color: customColors.fileListText),
                     onPressed: () async {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Fetching...'),
+                            title: Text('Fetching...', style: TextStyle(color: customColors.alertText)),
                             content: LinearProgressIndicator(),
                           );
                         },
@@ -414,6 +469,7 @@ class _FilesScreenState extends State<FilesScreen> {
                     },
                   ),
                   IconButton(
+                    color: Colors.red[900],
                     icon: Icon(Icons.delete),
                     onPressed: () async {
                       // Perform delete operation
@@ -427,6 +483,7 @@ class _FilesScreenState extends State<FilesScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: customColors.primary,
         child: Icon(Icons.add),
         onPressed: _pickAndUploadFile,
       ),

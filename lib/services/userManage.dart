@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/widgets.dart';
-import '../samples/sample.dart';
+
 
 class UserDetails {
   static String uid = '2HwXMU2F15azIXQiTklezKV7cIB2';
