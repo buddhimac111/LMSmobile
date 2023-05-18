@@ -5,6 +5,7 @@ import 'landing.dart';
 import 'home.dart';
 
 
+import 'results.dart';
 import 'samples/sample.dart';
 import 'samples/sample2.dart';
 
@@ -41,8 +42,9 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      // home: landing(),
+      // home: homePage(),
       home: landing(),
+      //   home: ResultsPage(),
       routes: {
         '/landing': (context) => landing(),
         '/home': (context) => homePage(),

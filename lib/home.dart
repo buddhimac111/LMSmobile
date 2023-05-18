@@ -7,7 +7,9 @@ import 'profile_view.dart';
 import 'timetable.dart';
 import 'modules.dart';
 import 'batches.dart';
+import 'results.dart';
 import 'services/userManage.dart';
+
 
 class homePage extends StatefulWidget {
   const homePage({
@@ -106,14 +108,7 @@ class _homePageState extends State<homePage> {
           children: <Widget>[
             if (UserDetails.role == 'Student') StudentsHome(),
             if (UserDetails.role == 'Lecturer') LectuersHome(),
-            Container(
-              alignment: Alignment.center,
-              child: Icon(
-                Icons.favorite_rounded,
-                size: 56,
-                color: Colors.red[400],
-              ),
-            ),
+            if (UserDetails.role == 'Student') ResultsPage(),
             timetable(),
             ProfileDetails(),
             // ProfileDetails(),
@@ -132,15 +127,16 @@ class _homePageState extends State<homePage> {
           selectedIndex: selectedIndex,
           barItems: <BarItem>[
             BarItem(
-              filledIcon: Icons.house_rounded,
-              outlinedIcon: Icons.roofing_rounded,
+              filledIcon: Icons.auto_stories_rounded,
+              outlinedIcon: Icons.auto_stories_outlined,
             ),
+            if (UserDetails.role == 'Student')
             BarItem(
-                filledIcon: Icons.favorite_rounded,
-                outlinedIcon: Icons.favorite_border_rounded),
+                filledIcon: Icons.school_rounded,
+                outlinedIcon: Icons.school_outlined,),
             BarItem(
-              filledIcon: Icons.today_rounded,
-              outlinedIcon: Icons.calendar_month_rounded,
+              filledIcon: Icons.calendar_month_rounded,
+              outlinedIcon: Icons.calendar_month_outlined,
             ),
             BarItem(
               filledIcon: Icons.person_rounded,

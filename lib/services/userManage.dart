@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import '../samples/sample.dart';
 
 class UserDetails {
-  static String uid = '';
+  static String uid = '2HwXMU2F15azIXQiTklezKV7cIB2';
   static String email = '';
 
   static String username = '';
