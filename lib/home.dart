@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lms/main.dart';
-import 'package:lms/sidebar/sidebar.dart';
+// import 'package:lms/sidebar/sidebar.dart';
 import 'package:water_drop_nav_bar/water_drop_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,9 +10,7 @@ import 'timetable.dart';
 import 'modules.dart';
 import 'batches.dart';
 import 'results.dart';
-import 'timetable.dart';
 import 'services/userManage.dart';
-
 
 class homePage extends StatefulWidget {
   const homePage({
@@ -44,7 +42,7 @@ class _homePageState extends State<homePage> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        drawer: const Sidebar(),
+        // drawer: const Sidebar(),
         appBar: AppBar(
           title: Text('UniLearn'),
           backgroundColor: customColors.primary,
@@ -88,7 +86,9 @@ class _homePageState extends State<homePage> {
                               textAlign: TextAlign.left,
                             ),
                           ),
-                          SizedBox(width: 6,),
+                          SizedBox(
+                            width: 6,
+                          ),
                           Icon(
                             Icons.logout,
                             color: customColors.primary,
@@ -101,29 +101,50 @@ class _homePageState extends State<homePage> {
                 onSelected: (String value) async {
                   // Handle menu item selection here
                   if (value == 'logout') {
-                    try {
-                      await FirebaseAuth.instance.signOut();
-                      Navigator.pushNamed(context, '/landing');
-                    } catch (e) {
-                      print(e);
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("Error"),
-                              content:
-                                  Text("logout failed maybe network error"),
-                              actions: [
-                                TextButton(
-                                  child: Text("ok"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            );
-                          });
-                    }
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            title: Text('Logout'),
+                            content: Text('Are you sure you want to logout?'),
+                            actions: [
+                              TextButton(
+                                child: Text("Yes"),
+                                onPressed: () async {
+                                  try {
+                                    await FirebaseAuth.instance.signOut();
+                                    Navigator.pushNamed(context, '/landing');
+                                  } catch (e) {
+                                    print(e);
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text("Error"),
+                                            content: Text(
+                                                "logout failed maybe network error"),
+                                            actions: [
+                                              TextButton(
+                                                child: Text("ok"),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              )
+                                            ],
+                                          );
+                                        });
+                                  }
+                                },
+                              ),
+                              TextButton(
+                                child: Text("No"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              )
+                            ]);
+                      },
+                    );
                   }
                   if (value == 'faq') {
                     Navigator.pushNamed(context, '/faq');
@@ -166,10 +187,10 @@ class _homePageState extends State<homePage> {
               outlinedIcon: Icons.auto_stories_outlined,
             ),
             if (UserDetails.role == 'Student')
-            BarItem(
+              BarItem(
                 filledIcon: Icons.school_rounded,
-                outlinedIcon: Icons.school_outlined,),
-
+                outlinedIcon: Icons.school_outlined,
+              ),
             BarItem(
               filledIcon: Icons.calendar_month_rounded,
               outlinedIcon: Icons.calendar_month_outlined,

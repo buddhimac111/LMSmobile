@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'services/userManage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class ProfileDetails extends StatefulWidget {
   const ProfileDetails({Key? key}) : super(key: key);
@@ -9,6 +10,23 @@ class ProfileDetails extends StatefulWidget {
 }
 
 class _ProfileState extends State<ProfileDetails> {
+  String backgroundImageUrl = '';
+  bool imgLoading = true;
+
+  Future<void> fetchImage() async {
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance.ref(
+        'profileImages/${UserDetails.uniid}.jpg'); // Replace 'images/tt.jpg' with your image path in Firebase Storage
+    backgroundImageUrl = await ref.getDownloadURL();
+    setState(() {});
+    imgLoading = false;// Update the state to reflect the fetched image URL
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchImage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,12 +36,21 @@ class _ProfileState extends State<ProfileDetails> {
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 SizedBox(
                   height: 115,
                   width: 115,
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage("assets/images/tt.jpg"),
+                  child: FutureBuilder<void>(
+                    future: precacheImage(NetworkImage(backgroundImageUrl), context),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else {
+                        return CircleAvatar(
+                          backgroundImage: NetworkImage(backgroundImageUrl),
+                        );
+                      }
+                    },
                   ),
                 ),
               ],

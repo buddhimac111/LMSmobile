@@ -1,8 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:flutter/widgets.dart';
-
 
 class UserDetails {
   static String uid = '2HwXMU2F15azIXQiTklezKV7cIB2';
@@ -21,7 +17,7 @@ class UserDetails {
   static String batch = '';
   static String degree = '';
 
-  static String doj = '';
+  static String doj = '2015-06-21';
 
   static Future<void> getDetails() async {
     try {

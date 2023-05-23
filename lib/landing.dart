@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lms/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'services/userManage.dart';
 
 class landing extends StatefulWidget {
@@ -95,94 +94,110 @@ class _landingState extends State<landing> {
     return Scaffold(
       backgroundColor: customColors.landingBackground,
       body: Center(
-        child: Container(
-            margin: const EdgeInsets.all(40.0),
-            width: 500.0,
-            height: 350.0,
-            child: Wrap(
-              children: [
-                Text(
-                  "Login",
-                  style: TextStyle(
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.bold,
-                    color: customColors.landingText,
-                  ),
+        child: Wrap(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 40.0, bottom: 10.0),
+              child: Text(
+                'UniLearn',
+                style: TextStyle(
+                  fontFamily: 'Courgette',
+                  fontSize: 60.0,
+                  fontWeight: FontWeight.bold,
                 ),
-                Column(
+              ),
+            ),
+            Container(
+                margin: const EdgeInsets.all(40.0),
+                width: 500.0,
+                height: 350.0,
+                child: Wrap(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 20.0),
-                    ),
-                    TextField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: customColors.landingText),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide:
-                              BorderSide(color: customColors.landingText),
-                        ),
-                        labelText: 'Username',
-                        labelStyle: TextStyle(
-                          color: customColors.landingText,
-                        ),
+                    Text(
+                      "Login",
+                      style: TextStyle(
+                        fontSize: 35.0,
+                        fontWeight: FontWeight.bold,
+                        color: customColors.landingText,
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 20.0),
-                    ),
-                    TextField(
-                      obscureText: true,
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide:
+                    Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 20.0),
+                        ),
+                        TextField(
+                          controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide:
                               BorderSide(color: customColors.landingText),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide:
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide:
                               BorderSide(color: customColors.landingText),
+                            ),
+                            labelText: 'Email',
+                            labelStyle: TextStyle(
+                              color: customColors.landingText,
+                            ),
+                          ),
                         ),
-                        labelText: 'Password',
-                        labelStyle: TextStyle(
-                          color: customColors.landingText,
+                        Container(
+                          margin: const EdgeInsets.only(top: 20.0),
                         ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 50.0),
-                    ),
-                    SizedBox(
-                      width: 300.0,
-                      height: 40.0,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
+                        TextField(
+                          obscureText: true,
+                          controller: passwordController,
+                          decoration: const InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide:
+                              BorderSide(color: customColors.landingText),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide:
+                              BorderSide(color: customColors.landingText),
+                            ),
+                            labelText: 'Password',
+                            labelStyle: TextStyle(
+                              color: customColors.landingText,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 50.0),
+                        ),
+                        SizedBox(
+                          width: 350.0,
+                          height: 40.0,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              setState(() {
+                                _isLoading = true;
+                              });
 
-                          login();
-                          // print(usernameController.text);
-                          // print(passwordController.text);
-                        },
-                        child: _isLoading
-                            ? CircularProgressIndicator()
-                            : Text("Login", style: TextStyle(fontSize: 20.0)),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: customColors.landingText,
-                          foregroundColor: customColors
-                              .landingBackground, // Background color
-                        ),
-                      ),
+                              login();
+                              // print(usernameController.text);
+                              // print(passwordController.text);
+                            },
+                            child: _isLoading
+                                ? CircularProgressIndicator()
+                                : Text("Login",
+                                    style: TextStyle(fontSize: 20.0)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: customColors.landingText,
+                              foregroundColor: customColors
+                                  .landingBackground, // Background color
+                            ),
+                          ),
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
-            )),
+                ))
+          ],
+        ),
       ),
     );
   }

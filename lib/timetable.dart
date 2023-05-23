@@ -78,7 +78,7 @@ class _timetableState extends State<timetable> {
                                 SizedBox(height: 10.0),
                                 Center(
                                   child: Text(
-                                    subjects[index].split("-")[0] + subjects[index].split("-")[1],
+                                    subjects[index].split("-")[0] + "-" + subjects[index].split("-")[1],
                                     style: TextStyle(
                                       color: customColors.black,
                                       fontWeight: FontWeight.bold,
